@@ -12,11 +12,27 @@ dados = OpenFile()
 
 save = []
 
-
 for i in dados:
-    save.append(int(i.split('\n')[0]))
+    try:
+        i = i.replace('\n',"")
+    except:
+        pass
+    try:
+        i = i.replace('\r',"")
+    except:
+        pass
+    save.append(int(i))
 
 save2 = save.copy()
+save3 = save.copy()
+
+def fcfs():
+    fcfsvar = 0
+    limit = len(save3)-1
+    for i in range(1, limit):
+        a = abs(save3[i] - save3[i+1])
+        fcfsvar += a
+    print("FCFS {}".format(fcfsvar))
 
 def findprox(lista, atual):
     esquerda = None
@@ -55,7 +71,7 @@ def ssfs():
         diskvar += abs(save[index]-indexprox)
         save.remove(save[index])
         index = save.index(indexprox)
-    print("SSTF",diskvar)
+    print("SSTF {}".format(diskvar))
 
 def elevador():
     save = save2
@@ -79,7 +95,8 @@ def elevador():
         for i in range(index-1, 0, -1):
             diskvar += abs(save[i]-save[i-1])
 
-    print("ELEVADOR",diskvar)
+    print("ELEVADOR {}".format(diskvar))
 
+fcfs()
 ssfs()
 elevador()

@@ -46,6 +46,8 @@ def otimo():
         count+=1
     print("OTM", nfaltapagina)
 
+def segundaChance():
+    pass
 
 
 otimo()
