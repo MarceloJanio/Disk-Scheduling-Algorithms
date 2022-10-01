@@ -1,4 +1,3 @@
-import queue
 import sys
 
 def OpenFile():
@@ -14,7 +13,19 @@ dados = OpenFile()
 save = []
 
 for i in dados:
-    save.append(int(i.split('\n')[0]))
+    try:
+        i = i.replace('\n',"")
+    except:
+        pass
+    try:
+        i = i.replace('\r',"")
+    except:
+        pass
+    save.append(int(i))
+
+save2 = save.copy()
+save3 = save.copy()
+
 
 def verificadistante(lista, listaConfere):
     index = 0
@@ -45,7 +56,7 @@ def otimo():
             quadro[quadro.index(substituido)] = i
             nfaltapagina += 1
         count+=1
-    print("OTM", nfaltapagina)
+    print("OTM {}".format(nfaltapagina))
 
 def zeraBitref(lista):
     for i in range(0, len(lista)):
@@ -79,16 +90,16 @@ def attnrotlist(number, lista):
 def segundaChance():
     nfaltapagina = 0
     quadro = []
-    nquadros = save.pop(0)
+    nquadros = save2.pop(0)
     iteracoes = 0
     for i in range(0, nquadros):
-        quadro.append([save[i], 1])
+        quadro.append([save2[i], 1])
         nfaltapagina += 1
         iteracoes += 1
         if(iteracoes == 4):
             zeraBitref(quadro)
             iteracoes = 0
-    queue = save[nquadros:]
+    queue = save2[nquadros:]
     proxQueue = 0
     while(proxQueue!=len(queue)-1):
         if(verificaNaLista(queue[proxQueue], quadro)):
@@ -104,7 +115,7 @@ def segundaChance():
             zeraBitref(quadro)
             iteracoes = 0
 
-    print(nfaltapagina)
+    print("SC {}".format(nfaltapagina))
 
 def atualizatime(lista, bol, number):
     if(bol):
@@ -135,19 +146,18 @@ def attlista(number, lista, limiar):
 def CT():
     nfaltapagina = 0
     quadro = []
-    nquadros = save.pop(0)
+    nquadros = save3.pop(0)
     iteracoes = 0
     limiar = (nquadros//2) + 1
     for i in range(0, nquadros):
         atualizatime(quadro, True, 0)
-        quadro.append([save[i], 1, 0])
+        quadro.append([save3[i], 1, 0])
         nfaltapagina += 1
         iteracoes += 1
         if(iteracoes == 4):
             zeraBitref(quadro)
             iteracoes = 0
-        print(quadro)
-    queue = save[nquadros:]
+    queue = save3[nquadros:]
     proxQueue = 0
     while(proxQueue!=len(queue)-1):
         if(verificaNaLista(queue[proxQueue], quadro)):
@@ -156,16 +166,16 @@ def CT():
             atualizatime(quadro, False, queue[proxQueue])
             iteracoes += 1
             proxQueue += 1
-            print(quadro)
         else:
             attlista(queue[proxQueue], quadro, limiar)
             iteracoes+=1
             proxQueue += 1
             nfaltapagina +=1
-            print(quadro)
         if(iteracoes == 3):
             zeraBitref(quadro)
             iteracoes = 0
-    print(nfaltapagina)
+    print("CT {}".format(nfaltapagina))
 
+segundaChance()
+otimo()
 CT()
