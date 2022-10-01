@@ -75,10 +75,6 @@ def attnrotlist(number, lista):
         if(count == len(lista)):
             count = 0
 
-def atualizainstante():
-    pass
-
-
 
 def segundaChance():
     nfaltapagina = 0
@@ -110,33 +106,66 @@ def segundaChance():
 
     print(nfaltapagina)
 
+def atualizatime(lista, bol, number):
+    if(bol):
+        for i in range(0, len(lista)):
+            lista[i][-1] = lista[i][-1]+1
+    else:
+        for i in range(0, len(lista)):
+            if(lista[i][0] == number):
+                lista[i][2] = 0
+                return 0
+    
+def attlista(number, lista, limiar):
+    for i in range(0, len(lista)):
+        if(lista[i][2] > limiar and lista[i][1] == 0):
+            lista[i][0] = number
+            lista[i][1] = 1
+            lista[i][2] = 0
+            return 0
+        else:   
+            id = 0
+            maioridade = lista[0][2]
+            for j in range(1, len(lista)):
+                if(lista[i][1]>maioridade):
+                    maioridade = lista[j][2]
+                    id = j
+        lista[id] = [number, 1, 0]
+
 def CT():
     nfaltapagina = 0
     quadro = []
     nquadros = save.pop(0)
     iteracoes = 0
-    instante = 0
+    limiar = (nquadros//2) + 1
     for i in range(0, nquadros):
-        quadro.append([save[i], 1, instante])
+        atualizatime(quadro, True, 0)
+        quadro.append([save[i], 1, 0])
         nfaltapagina += 1
         iteracoes += 1
-        instante += 1
         if(iteracoes == 4):
             zeraBitref(quadro)
             iteracoes = 0
+        print(quadro)
     queue = save[nquadros:]
+    proxQueue = 0
     while(proxQueue!=len(queue)-1):
         if(verificaNaLista(queue[proxQueue], quadro)):
             atualizaBitref(queue[proxQueue], quadro)
+            atualizatime(quadro, True, 0)
+            atualizatime(quadro, False, queue[proxQueue])
             iteracoes += 1
             proxQueue += 1
+            print(quadro)
         else:
-            attnrotlist(queue[proxQueue], quadro)
+            attlista(queue[proxQueue], quadro, limiar)
             iteracoes+=1
             proxQueue += 1
             nfaltapagina +=1
+            print(quadro)
         if(iteracoes == 3):
             zeraBitref(quadro)
             iteracoes = 0
+    print(nfaltapagina)
 
 CT()
