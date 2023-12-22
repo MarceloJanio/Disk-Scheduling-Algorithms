@@ -1,4 +1,4 @@
-# Smith-Waterman 🧬
+# Escalonamento de disco 📀
 
 Um trabalho acadêmico para replicar algoritmos de escalonamento em disco, processo e memória ram.
 
