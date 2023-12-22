@@ -8,6 +8,7 @@ def OpenFile():
     except:
         print('Arquivo não encontrado!')
         exit(0)
+        
 dados = OpenFile()
 
 save = []
